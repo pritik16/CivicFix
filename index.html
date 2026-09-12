@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CivicFix — Report & Track Local Community Issues</title>
+  <meta name="description" content="CivicFix is a citizen-powered platform to report potholes, broken streetlights, garbage accumulation, and civic problems directly to local municipal authorities.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 1. Header & Navigation -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="CivicFix Home">
+        <div class="brand-icon">
+          <!-- Pin/Wrench Civic Icon -->
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </div>
+        <span>CivicFix</span>
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="#issues" class="nav-link nav-link-text">Public Feed</a></li>
+          <li><a href="#how-it-works" class="nav-link nav-link-text">How It Works</a></li>
+          <li>
+            <a href="report.html" class="btn btn-primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span>Report an Issue</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 2. Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span>🏛️ Direct Municipal Accountability</span>
+        </div>
+        <h1 class="hero-title">Make Your Neighborhood Safer, Cleaner & Better Maintained</h1>
+        <p class="hero-subtitle">
+          Spot a pothole, a dark streetlight, or an overflowing dumpster? Submit a photo and location in seconds. Track real-time progress as local municipal crews get it fixed.
+        </p>
+        <div class="hero-actions">
+          <a href="report.html" class="btn btn-accent btn-lg">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+              <circle cx="12" cy="13" r="4"></circle>
+            </svg>
+            <span>Report an Issue Now</span>
+          </a>
+          <a href="#issues" class="btn btn-outline btn-lg">
+            <span>Explore Community Feed</span>
+          </a>
+        </div>
+
+        <!-- Real-World Impact Counters -->
+        <div class="stats-banner">
+          <div class="stat-item">
+            <div class="stat-number">1,420+</div>
+            <div class="stat-label">Issues Reported</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">89%</div>
+            <div class="stat-label">Resolution Rate</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">&lt; 48 hrs</div>
+            <div class="stat-label">Average Crew Response</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Community Feed Section -->
+  <main id="issues" class="feed-section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Recent Community Reports</h2>
+          <p class="section-description">Real-time civic complaints submitted by active residents across the municipality.</p>
+        </div>
+        <a href="report.html" class="btn btn-outline">
+          <span>+ File New Report</span>
+        </a>
+      </div>
+
+      <!-- Filter Pills (Static representation for MVP) -->
+      <div class="filter-bar" role="tablist" aria-label="Filter issues by category">
+        <button class="filter-pill active" type="button">All Issues</button>
+        <button class="filter-pill" type="button">🚧 Potholes & Roads</button>
+        <button class="filter-pill" type="button">💡 Streetlights</button>
+        <button class="filter-pill" type="button">🗑️ Garbage & Sanitation</button>
+        <button class="filter-pill" type="button">💧 Water Supply & Leaks</button>
+        <button class="filter-pill" type="button">⚠️ Hazards</button>
+      </div>
+
+      <!-- Issues Cards Grid -->
+      <div class="issue-grid">
+
+        <!-- Card 1: Pothole (Submitted) -->
+        <article class="issue-card">
+          <div class="issue-card-image-wrapper">
+            <img class="issue-card-img" src="https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?auto=format&fit=crop&w=600&q=80" alt="Deep pothole on asphalt road" loading="lazy">
+            <span class="status-badge status-submitted">Submitted</span>
+          </div>
+          <div class="issue-card-body">
+            <span class="issue-category-tag">🚧 Potholes & Roads</span>
+            <h3 class="issue-card-title">Deep Pothole at 4th Avenue Intersection</h3>
+            <p class="issue-card-desc">Dangerous crater near pedestrian crosswalk causing swerving vehicles and two flat tires reported this morning.</p>
+            <div class="issue-card-footer">
+              <div class="issue-location" title="Corner of 4th Ave & Pine Street">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <span>4th Ave & Pine St</span>
+              </div>
+              <time datetime="2026-09-12">2 hours ago</time>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 2: Broken Streetlight (In Progress) -->
+        <article class="issue-card">
+          <div class="issue-card-image-wrapper">
+            <img class="issue-card-img" src="https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&w=600&q=80" alt="Dark street with non-working street lamp" loading="lazy">
+            <span class="status-badge status-progress">In Progress</span>
+          </div>
+          <div class="issue-card-body">
+            <span class="issue-category-tag">💡 Streetlights</span>
+            <h3 class="issue-card-title">Non-Working Light Near Elementary School</h3>
+            <p class="issue-card-desc">Lamp pole #14 has been unlit for 4 consecutive nights, making the school walkway completely dark for evening commuters.</p>
+            <div class="issue-card-footer">
+              <div class="issue-location" title="Maplewood Elementary East Gate">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <span>Maplewood School Gate</span>
+              </div>
+              <time datetime="2026-09-11">Yesterday</time>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 3: Garbage Accumulation (Resolved) -->
+        <article class="issue-card">
+          <div class="issue-card-image-wrapper">
+            <img class="issue-card-img" src="https://images.unsplash.com/photo-1530587191325-3db32d826c18?auto=format&fit=crop&w=600&q=80" alt="Clean public park with empty bins" loading="lazy">
+            <span class="status-badge status-resolved">Resolved</span>
+          </div>
+          <div class="issue-card-body">
+            <span class="issue-category-tag">🗑️ Garbage & Sanitation</span>
+            <h3 class="issue-card-title">Overflowing Dumpster at Central Park</h3>
+            <p class="issue-card-desc">Waste bins were overflowing onto the public walkway. Sanitation team dispatched and complete clearance performed.</p>
+            <div class="issue-card-footer">
+              <div class="issue-location" title="Central Park North Entrance">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <span>Central Park North Entrance</span>
+              </div>
+              <time datetime="2026-09-09">3 days ago</time>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 4: Water Pipe Leak (In Progress) -->
+        <article class="issue-card">
+          <div class="issue-card-image-wrapper">
+            <img class="issue-card-img" src="https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=600&q=80" alt="Water gushing on roadside curb" loading="lazy">
+            <span class="status-badge status-progress">In Progress</span>
+          </div>
+          <div class="issue-card-body">
+            <span class="issue-category-tag">💧 Water Supply</span>
+            <h3 class="issue-card-title">Underground Pipe Burst Flooding Sidewalk</h3>
+            <p class="issue-card-desc">High-pressure potable water spraying from beneath paving slabs. Utility repair crew currently isolating valve.</p>
+            <div class="issue-card-footer">
+              <div class="issue-location" title="Opposite 18 Elm Boulevard">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <span>Opposite 18 Elm Blvd</span>
+              </div>
+              <time datetime="2026-09-11">1 day ago</time>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 5: Damaged Curb / Sidewalk (Submitted) -->
+        <article class="issue-card">
+          <div class="issue-card-image-wrapper">
+            <img class="issue-card-img" src="https://images.unsplash.com/photo-1584467735815-f778f274e296?auto=format&fit=crop&w=600&q=80" alt="Cracked concrete sidewalk curb" loading="lazy">
+            <span class="status-badge status-submitted">Submitted</span>
+          </div>
+          <div class="issue-card-body">
+            <span class="issue-category-tag">🚧 Potholes & Roads</span>
+            <h3 class="issue-card-title">Broken Curb & Wheelchair Ramp Blockage</h3>
+            <p class="issue-card-desc">Concrete edge cracked and raised 3 inches, creating a major tripping hazard and blocking wheelchair access.</p>
+            <div class="issue-card-footer">
+              <div class="issue-location" title="Corner of 8th & Grand Avenue">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <span>8th & Grand Ave</span>
+              </div>
+              <time datetime="2026-09-12">4 hours ago</time>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 6: Open Manhole (Resolved) -->
+        <article class="issue-card">
+          <div class="issue-card-image-wrapper">
+            <img class="issue-card-img" src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=600&q=80" alt="Secured street maintenance drain" loading="lazy">
+            <span class="status-badge status-resolved">Resolved</span>
+          </div>
+          <div class="issue-card-body">
+            <span class="issue-category-tag">⚠️ Hazards</span>
+            <h3 class="issue-card-title">Displaced Sewer Grate at Bus Stop</h3>
+            <p class="issue-card-desc">Heavy metal cover was shifted after heavy rain. Emergency public works team replaced and bolted the grate.</p>
+            <div class="issue-card-footer">
+              <div class="issue-location" title="Market Street Transit Stop">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <span>Market St Bus Stop</span>
+              </div>
+              <time datetime="2026-09-07">5 days ago</time>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- 4. "How It Works" Educational Section -->
+  <section id="how-it-works" class="steps-section">
+    <div class="container">
+      <div class="hero-content">
+        <h2 class="section-title">How CivicFix Works</h2>
+        <p class="section-description">A simple, transparent 3-step loop between citizens and city maintenance teams.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <h3 class="step-title">Snap & Report</h3>
+          <p class="step-desc">Take a clear photo of the problem, write a brief description, and provide the location landmark.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <h3 class="step-title">Authorities Triage</h3>
+          <p class="step-desc">The municipal admin department reviews your report, prioritizes urgency, and assigns an on-field repair crew.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <h3 class="step-title">Track & Resolve</h3>
+          <p class="step-desc">Monitor live progress updates from "Submitted" to "In Progress" until the issue is verified and marked "Resolved".</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <div class="brand-icon" style="width: 24px; height: 24px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </div>
+        <span>CivicFix Community Portal</span>
+      </div>
+      <p class="footer-text">Built for cleaner, safer, and more accountable local neighborhoods.</p>
+      <ul class="footer-nav">
+        <li><a href="index.html" class="footer-link">Home</a></li>
+        <li><a href="report.html" class="footer-link">File Report</a></li>
+        <li><a href="#issues" class="footer-link">Feed</a></li>
+      </ul>
+    </div>
+  </footer>
+
+</body>
+</html>
