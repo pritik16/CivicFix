@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // --------------------------------------------------------------------------
   // 6. Form Submission & Comprehensive Validation
   // --------------------------------------------------------------------------
-  reportForm.addEventListener('submit', (event) => {
+  reportForm.addEventListener('submit',async (event) => {
     // PREVENT the browser's default behavior (which would reload the page)
     event.preventDefault();
 
@@ -267,28 +267,50 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // If ALL validations passed:
-    // 1. Show the friendly success banner
+   // If ALL validations passed:
+try {
+  const formData = new FormData();
+
+formData.append('title', titleValue);
+formData.append('category', categorySelect.value);
+formData.append('description', descriptionValue);
+formData.append('location', locationValue);
+formData.append('photo', photoInput.files[0]);
+  
+  const response = await fetch('http://localhost:3000/api/issues', {
+    method: 'POST',
+    body:formData
+  });
+    
+       
+
+  const result = await response.json();
+
+  if (response.ok) {
+    // Show success message
     successBanner.classList.add('visible');
 
-    // 2. Reset the form inputs
+    // Reset form
     reportForm.reset();
 
-    // 3. Reset the image preview box to its initial empty state
+    // Reset photo preview
     photoPreviewArea.innerHTML = defaultPreviewHTML;
 
-    // 4. Smoothly scroll to the top of the form container so the user sees the confirmation
-    successBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-    // Inform the developer in the browser console
-    console.log('CivicFix Stage 2 Mock Submission Successful:', {
-      title: titleValue,
-      category: categorySelect.value,
-      description: descriptionValue,
-      location: locationValue,
-      photoFileName: photoFile ? photoFile.name : null,
-      submittedAt: new Date().toISOString()
+    // Scroll to success message
+    successBanner.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
     });
-  });
 
+    console.log('CivicFix Backend Response:', result);
+  } else {
+    console.error('Backend Error:', result);
+    alert('Failed to submit the issue. Please try again.');
+  }
+
+} catch (error) {
+  console.error('Connection Error:', error);
+  alert('Cannot connect to CivicFix server. Make sure the backend is running.');
+}
+  });
 });

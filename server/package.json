@@ -1,0 +1,22 @@
+{
+  "name": "civicfix-backend",
+  "version": "1.0.0",
+  "description": "Backend API server for CivicFix civic issue reporting platform",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "civicfix",
+    "express",
+    "nodejs",
+    "api"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^4.22.3",
+    "multer": "^2.4.0"
+  }
+}
