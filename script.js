@@ -276,7 +276,9 @@ formData.append('category', categorySelect.value);
 formData.append('description', descriptionValue);
 formData.append('location', locationValue);
 formData.append('photo', photoInput.files[0]);
+console.log("CIVICFIX: Submit handler reached fetch");
   
+
   const response = await fetch('http://localhost:3000/api/issues', {
     method: 'POST',
     body:formData
@@ -309,7 +311,8 @@ formData.append('photo', photoInput.files[0]);
   }
 
 } catch (error) {
-  console.error('Connection Error:', error);
+  alert('Connection Error: ' + error.message);
+console.error('Connection Error:', error);
   alert('Cannot connect to CivicFix server. Make sure the backend is running.');
 }
   });

@@ -5,7 +5,11 @@ server/node_modules/
 # Environment Variables
 .env
 server/.env
+*.env
 
 # OS Files
 .DS_Store
 Thumbs.db
+
+# Uploaded complaint photos
+server/uploads/
