@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Sign In — CivicFix Portal</title>
+  <meta name="description" content="Secure administrator sign-in for the CivicFix platform.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 1. Header & Navigation -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="CivicFix Home">
+        <div class="brand-icon">
+          <!-- Shield/Civic Icon -->
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+        </div>
+        <span>CivicFix</span>
+        <span class="admin-badge">Admin Portal</span>
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">← Back to Public Feed</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 2. Main Authentication Content -->
+  <main class="form-page-wrapper">
+    <div class="container">
+      <section class="form-container form-card-auth">
+
+        <!-- Header -->
+        <header class="form-header">
+          <div style="display: inline-flex; align-items: center; justify-content: center; width: 54px; height: 54px; background-color: var(--primary-light); color: var(--primary); border-radius: 50%; margin-bottom: 1rem;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+          </div>
+          <h1 class="form-title">Administrator Sign In</h1>
+          <p class="form-subtitle">Enter your administrator credentials to access the CivicFix dashboard.</p>
+        </header>
+
+        <!-- Access Notice -->
+        <div class="form-notice">
+          <strong>🔒 Authorized Personnel Only:</strong> Access to the CivicFix Admin Dashboard requires verified credentials. All sign-in attempts are logged and rate-limited.
+        </div>
+
+        <!-- Info / Status Banner (e.g., Session Expired, Logged Out) -->
+        <div id="login-info-banner" class="login-info-banner" role="status" aria-live="polite">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 1px;" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          <span id="login-info-text">Please sign in to continue.</span>
+        </div>
+
+        <!-- Error Alert Banner (e.g., Invalid credentials, Rate limit) -->
+        <div id="login-error-banner" class="login-error-banner" role="alert" aria-live="assertive">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 1px;" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span id="login-error-text">Invalid username or password.</span>
+        </div>
+
+        <!-- Sign-In Form -->
+        <form id="admin-login-form" action="#" method="POST" novalidate>
+
+          <!-- Field 1: Username -->
+          <div class="form-group">
+            <label for="admin-username" class="form-label">
+              Administrator Username <span class="required" aria-hidden="true">*</span>
+            </label>
+            <input
+              type="text"
+              id="admin-username"
+              name="username"
+              class="form-input"
+              placeholder="e.g., civicfix_admin"
+              autocomplete="username"
+              required
+              maxlength="100"
+            >
+            <p class="form-error" id="username-error">Please enter your administrator username.</p>
+          </div>
+
+          <!-- Field 2: Password -->
+          <div class="form-group">
+            <label for="admin-password" class="form-label">
+              Password <span class="required" aria-hidden="true">*</span>
+            </label>
+            <input
+              type="password"
+              id="admin-password"
+              name="password"
+              class="form-input"
+              placeholder="••••••••••••"
+              autocomplete="current-password"
+              required
+              maxlength="100"
+            >
+            <p class="form-error" id="password-error">Please enter your administrator password.</p>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" id="login-submit-btn" class="btn btn-primary btn-block btn-lg" style="margin-top: 1.25rem;">
+            <span id="login-btn-spinner" style="display: none;" aria-hidden="true">⏳</span>
+            <span id="login-btn-text">Sign In to Admin Portal</span>
+          </button>
+        </form>
+
+        <!-- Help & Secondary Link -->
+        <div style="text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); font-size: 0.85rem; color: var(--text-muted);">
+          <span>Need public citizen reporting? </span>
+          <a href="report.html" style="color: var(--primary); font-weight: 600;">Report an issue here →</a>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- 3. Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <div class="brand-icon" style="width: 24px; height: 24px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+        </div>
+        <span>CivicFix Operations Portal</span>
+      </div>
+      <p class="footer-text">CivicFix management portal for tracking and managing community-reported issues.</p>
+      <ul class="footer-nav">
+        <li><a href="index.html" class="footer-link">Public Feed</a></li>
+        <li><a href="report.html" class="footer-link">Submit Report</a></li>
+        <li><a href="admin.html" class="footer-link">Admin Dashboard</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- Connect Admin Login Script -->
+  <script src="admin-login.js"></script>
+</body>
+</html>

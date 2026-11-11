@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CivicFix Admin — Issue Management Dashboard</title>
+  <meta name="description" content="Municipal operations dashboard for reviewing, tracking, and managing citizen-reported civic issues.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 1. Header & Navigation -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="admin.html" class="brand-logo" aria-label="CivicFix Admin Home">
+        <div class="brand-icon">
+          <!-- Shield/Gear Admin Civic Icon -->
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+        </div>
+        <span>CivicFix</span>
+        <span class="admin-badge">Admin Portal</span>
+      </a>
+
+      <nav aria-label="Admin Navigation" style="display: flex; align-items: center; gap: 1.5rem;">
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Public Feed</a></li>
+          <li><a href="report.html" class="nav-link">Report Issue</a></li>
+        </ul>
+
+        <!-- Authenticated Admin Controls (revealed after verification) -->
+        <div class="admin-nav-actions" id="admin-nav-auth" style="display: none;">
+          <span class="admin-user-indicator" id="admin-user-display" title="Logged in administrator">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span id="admin-username-label">Admin</span>
+          </span>
+          <button type="button" id="admin-logout-btn" class="btn btn-outline" style="padding: 0.45rem 0.9rem; font-size: 0.85rem;" title="Sign out of Admin Dashboard">
+            Log Out
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 2. Authentication Loading State (Visible while verifying session token) -->
+  <div id="admin-auth-loading" class="container" style="text-align: center; padding: 6rem 1rem; color: var(--text-muted);">
+    <div style="display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; background-color: var(--primary-light); color: var(--primary); border-radius: 50%; margin-bottom: 1.25rem;">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+      </svg>
+    </div>
+    <h2 style="font-size: 1.35rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.4rem;">
+      Verifying Administrator Session...
+    </h2>
+    <p style="font-size: 0.95rem;">Checking authorization credentials with CivicFix backend.</p>
+  </div>
+
+  <!-- 3. Protected Dashboard Root (Revealed strictly after token verification) -->
+  <div id="admin-dashboard-root" style="display: none;">
+
+    <!-- Dashboard Header & Complaint Counters -->
+    <section class="admin-header">
+      <div class="container">
+        <h1 class="hero-title" style="font-size: clamp(1.75rem, 3.5vw, 2.5rem); margin-bottom: 0.5rem;">
+          CivicFix Admin Dashboard
+        </h1>
+        <p class="hero-subtitle" style="margin-bottom: 1.5rem; font-size: 1.05rem;">
+          Real-time complaint tracking, categorization, and operational status overview.
+        </p>
+
+        <!-- Dynamic 4-Part Complaint Counters -->
+        <div class="admin-stats-grid" id="admin-stats-grid" aria-label="Operational Statistics">
+          <div class="admin-stat-card">
+            <div class="stat-number" id="admin-stat-total">-</div>
+            <div class="stat-label">Total Reports</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="stat-number" id="admin-stat-pending" style="color: var(--status-submitted-text);">-</div>
+            <div class="stat-label">Pending / Submitted</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="stat-number" id="admin-stat-progress" style="color: var(--status-progress-text);">-</div>
+            <div class="stat-label">In Progress</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="stat-number" id="admin-stat-resolved" style="color: var(--status-resolved-text);">-</div>
+            <div class="stat-label">Resolved</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Complaints Data Table Section -->
+    <main class="container">
+      <div class="admin-table-container">
+        <div class="admin-table-header">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <h2 style="font-size: 1.25rem; font-weight: 700; margin: 0;">Reported Civic Issues</h2>
+            <span id="admin-count-pill" class="issue-category-tag" style="margin-bottom: 0;">-</span>
+          </div>
+          <button type="button" id="admin-refresh-btn" class="btn btn-outline" style="padding: 0.45rem 1rem; font-size: 0.85rem;">
+            🔄 Refresh Data
+          </button>
+        </div>
+
+        <!-- Live Status Update Feedback Banner -->
+        <div id="admin-feedback-banner" class="admin-feedback-banner" role="status" aria-live="polite" style="display: none;">
+          <span id="admin-feedback-text"></span>
+        </div>
+
+        <!-- Content Area: Loading, Error, Empty, or Table rendered by admin.js -->
+        <div id="admin-table-area">
+          <!-- Live content dynamically injected by admin.js -->
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- 4. Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <div class="brand-icon" style="width: 24px; height: 24px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+        </div>
+        <span>CivicFix Operations Portal</span>
+      </div>
+      <p class="footer-text">CivicFix management portal for tracking and managing community-reported issues.</p>
+      <ul class="footer-nav">
+        <li><a href="index.html" class="footer-link">Public Feed</a></li>
+        <li><a href="report.html" class="footer-link">Submit Report</a></li>
+        <li><a href="admin.html" class="footer-link">Admin Dashboard</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- Connect Admin JavaScript -->
+  <script src="admin.js"></script>
+</body>
+</html>
