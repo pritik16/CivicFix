@@ -281,16 +281,26 @@ console.log("CIVICFIX: Submit handler reached fetch");
 
   const response = await fetch('http://localhost:3000/api/issues', {
     method: 'POST',
-    body:formData
+    body: formData
   });
-    
-       
 
   const result = await response.json();
 
   if (response.ok) {
     // Show success message
     successBanner.classList.add('visible');
+
+    // Display unique tracking token if returned by backend
+    if (result && result.trackingToken) {
+      const tokenEl = document.getElementById('submission-tracking-token');
+      const trackLink = document.getElementById('track-direct-link');
+      if (tokenEl) {
+        tokenEl.textContent = result.trackingToken;
+      }
+      if (trackLink) {
+        trackLink.href = `track.html?token=${encodeURIComponent(result.trackingToken)}`;
+      }
+    }
 
     // Reset form
     reportForm.reset();
@@ -312,8 +322,58 @@ console.log("CIVICFIX: Submit handler reached fetch");
 
 } catch (error) {
   alert('Connection Error: ' + error.message);
-console.error('Connection Error:', error);
+  console.error('Connection Error:', error);
   alert('Cannot connect to CivicFix server. Make sure the backend is running.');
 }
   });
+
+  // --------------------------------------------------------------------------
+  // 8. Copy Tracking Token to Clipboard
+  // --------------------------------------------------------------------------
+  const copyTokenBtn = document.getElementById('copy-token-btn');
+  const copyStatusMsg = document.getElementById('copy-status-msg');
+
+  if (copyTokenBtn) {
+    copyTokenBtn.addEventListener('click', () => {
+      const tokenEl = document.getElementById('submission-tracking-token');
+      if (!tokenEl) return;
+      const token = tokenEl.textContent.trim();
+      if (!token || token === 'Generating token...') return;
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(token).then(showCopied).catch(fallbackCopy);
+      } else {
+        fallbackCopy();
+      }
+
+      function fallbackCopy() {
+        const textarea = document.createElement('textarea');
+        textarea.value = token;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          showCopied();
+        } catch (err) {
+          console.error('Copy failed:', err);
+        }
+        document.body.removeChild(textarea);
+      }
+
+      function showCopied() {
+        if (copyStatusMsg) {
+          copyStatusMsg.style.display = 'block';
+          setTimeout(() => {
+            copyStatusMsg.style.display = 'none';
+          }, 3500);
+        }
+        copyTokenBtn.textContent = '✓ Copied!';
+        setTimeout(() => {
+          copyTokenBtn.textContent = '📋 Copy Token';
+        }, 3500);
+      }
+    });
+  }
 });

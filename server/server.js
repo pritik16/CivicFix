@@ -18,6 +18,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const dns = require('dns');
 const multer = require('multer');
+const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const rateLimit = require('express-rate-limit');
@@ -119,19 +120,31 @@ app.post('/api/issues', upload.single('photo'), async (req, res) => {
       ? `http://localhost:${PORT}/uploads/${req.file.filename}`
       : null;
 
+    // Generate a cryptographically secure tracking token (e.g., CF-A1B2C3D4E5F6789012345678)
+    const trackingToken = `CF-${crypto.randomBytes(12).toString('hex').toUpperCase()}`;
+
+    // Store ONLY a secure SHA-256 hash of the token in the database
+    const trackingTokenHash = crypto
+      .createHash('sha256')
+      .update(trackingToken)
+      .digest('hex');
+
     const newIssue = await Issue.create({
       title,
       category,
       description,
       location,
-      photoUrl
+      photoUrl,
+      trackingTokenHash
     });
 
     console.log('New civic issue saved:', newIssue._id);
 
+    // Return the plaintext tracking token to the citizen for one-time saving
     res.status(201).json({
       success: true,
       message: 'CivicFix issue saved successfully!',
+      trackingToken,
       data: newIssue
     });
   } catch (error) {
@@ -140,6 +153,71 @@ app.post('/api/issues', upload.single('photo'), async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Failed to save the issue.',
+      error: error.message
+    });
+  }
+});
+
+// Rate Limiter: Public Complaint Tracking (Max 30 requests per 15 minutes per IP address)
+const trackLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: 'Too many tracking requests from this IP address. Please try again after 15 minutes.'
+  }
+});
+
+// GET Route: Public Complaint Tracking by Secure Token
+// Returns ONLY the complaint status and creation date. Never leaks private details, photos, or MongoDB IDs.
+app.get(['/api/issues/track/:token', '/api/issues/track'], trackLimiter, async (req, res) => {
+  try {
+    const rawToken = req.params.token || req.query.token;
+
+    // 1. Validate token format (must be non-empty string, length 10-64, alphanumeric with hyphen/underscore)
+    if (
+      typeof rawToken !== 'string' ||
+      rawToken.trim().length < 10 ||
+      rawToken.trim().length > 64 ||
+      !/^[A-Za-z0-9_-]+$/.test(rawToken.trim())
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid tracking token format.'
+      });
+    }
+
+    // 2. Compute cryptographic SHA-256 hash of normalized token
+    const tokenHash = crypto
+      .createHash('sha256')
+      .update(rawToken.trim().toUpperCase())
+      .digest('hex');
+
+    // 3. Query complaint by stored trackingTokenHash
+    // Select ONLY status and createdAt to protect community privacy
+    const issue = await Issue.findOne({ trackingTokenHash: tokenHash }).select('status createdAt');
+
+    if (!issue) {
+      return res.status(404).json({
+        success: false,
+        message: 'No complaint found matching this tracking token. Please check your token and try again.'
+      });
+    }
+
+    // 4. Return strictly public status and submission date
+    res.status(200).json({
+      success: true,
+      status: issue.status,
+      createdAt: issue.createdAt
+    });
+
+  } catch (error) {
+    console.error('Error tracking complaint:', error.message);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to look up complaint status.',
       error: error.message
     });
   }
@@ -381,6 +459,7 @@ app.listen(PORT, () => {
   console.log(`📡 Listening on:    http://localhost:${PORT}`);
   console.log(`🧪 Test Endpoint:   GET  http://localhost:${PORT}/api/test`);
   console.log(`📝 Issues Endpoint: GET/POST http://localhost:${PORT}/api/issues`);
+  console.log(`🔍 Track Endpoint:  GET  http://localhost:${PORT}/api/issues/track/:token`);
   console.log(`🔐 Admin Login:     POST http://localhost:${PORT}/api/admin/login`);
   console.log(`🛡️ Admin Verify:    GET  http://localhost:${PORT}/api/admin/verify`);
   console.log(`⚙️ Update Status:   PATCH http://localhost:${PORT}/api/issues/:id`);

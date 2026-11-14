@@ -27,6 +27,12 @@ const issueSchema = new mongoose.Schema({
     type: String,
     enum: ['pending', 'approved', 'done'],
     default: 'pending'
+  },
+  trackingTokenHash: {
+    type: String,
+    default: null,
+    index: true,
+    select: false
   }
 }, {
   timestamps: true

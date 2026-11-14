@@ -1032,3 +1032,213 @@ a {
   cursor: not-allowed;
   background-color: #f1f5f9;
 }
+
+/* --- 13. Public Tracking & Token Styles --- */
+.token-result-box {
+  background-color: #f8fafc;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-top: 1rem;
+}
+
+.token-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.4rem;
+}
+
+.token-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.85rem;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.token-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 0.05em;
+  word-break: break-all;
+}
+
+.copy-success-text {
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-weight: 600;
+  margin-top: 0.35rem;
+}
+
+.token-warning {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.6rem;
+  line-height: 1.45;
+}
+
+/* Three-Step Progress Stepper */
+.stepper-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+  margin: 2.25rem 0 1.75rem;
+}
+
+.stepper-line-bg {
+  position: absolute;
+  top: 20px;
+  left: 15%;
+  right: 15%;
+  height: 3px;
+  background-color: var(--border-color);
+  z-index: 1;
+}
+
+.stepper-line-fill {
+  position: absolute;
+  top: 20px;
+  left: 15%;
+  height: 3px;
+  background-color: var(--accent);
+  z-index: 2;
+  transition: width 0.4s ease;
+  width: 0%;
+}
+
+.step-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 3;
+  width: 30%;
+}
+
+.step-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: #f1f5f9;
+  border: 2.5px solid var(--border-color);
+  color: var(--text-muted);
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  margin-bottom: 0.5rem;
+}
+
+.step-node.is-completed .step-circle {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+.step-node.is-active .step-circle {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.2);
+}
+
+.step-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.15rem;
+}
+
+.step-node.is-pending .step-title {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.step-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+  max-width: 140px;
+}
+
+@media (max-width: 600px) {
+  .stepper-container {
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 1.75rem 0 1rem;
+    padding-left: 0.5rem;
+  }
+
+  .stepper-line-bg {
+    top: 20px;
+    bottom: 20px;
+    left: 25px;
+    width: 3px;
+    height: calc(100% - 40px);
+    right: auto;
+  }
+
+  .stepper-line-fill {
+    top: 20px;
+    left: 25px;
+    width: 3px;
+    height: 0%;
+    right: auto;
+    transition: height 0.4s ease;
+  }
+
+  .step-node {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    width: 100%;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+  }
+
+  .step-circle {
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+
+  .step-desc {
+    max-width: 100%;
+  }
+}
+
+/* Tracking Result Card */
+.tracking-result-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  margin-top: 2rem;
+  box-shadow: var(--shadow-sm);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.tracking-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-color);
+}
+
+@media (max-width: 500px) {
+  .tracking-meta-grid {
+    grid-template-columns: 1fr;
+  }
+}

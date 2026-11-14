@@ -24,6 +24,7 @@
 
       <nav aria-label="Main Navigation">
         <ul class="nav-links">
+          <li><a href="track.html" class="nav-link">Track Complaint</a></li>
           <li><a href="index.html" class="nav-link">← Back to Public Feed</a></li>
         </ul>
       </nav>
@@ -47,15 +48,40 @@
 
         <!-- Form Submission Success Banner -->
         <div id="form-success-banner" class="form-success-banner" role="alert">
-          <svg class="success-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="success-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
             <polyline points="22 4 12 14.01 9 11.01"></polyline>
           </svg>
-          <div>
+          <div style="flex-grow: 1;">
             <h2 class="success-title">Report Submitted Successfully!</h2>
             <p class="success-desc">
-              Your civic report has been received and logged locally. Once our backend is connected in Stage 4, this will automatically register with your local municipal department.
+              Your civic report has been received and saved. Save your unique tracking token below to monitor progress anytime.
             </p>
+
+            <!-- Tracking Token Result Box -->
+            <div id="submission-token-container" class="token-result-box">
+              <div class="token-label">Your Unique Tracking Token:</div>
+              <div class="token-row">
+                <code id="submission-tracking-token" class="token-code">Generating token...</code>
+                <button type="button" id="copy-token-btn" class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.825rem;">
+                  📋 Copy Token
+                </button>
+              </div>
+              <div id="copy-status-msg" class="copy-success-text" style="display: none;">
+                ✓ Token copied to clipboard!
+              </div>
+              <p class="token-warning">
+                <strong>⚠️ Save this token now:</strong> For community privacy, our database stores only an irreversible cryptographic hash. This tracking token cannot be recovered if lost.
+              </p>
+              <div style="margin-top: 1rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                <a id="track-direct-link" href="track.html" class="btn btn-accent" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+                  Track This Complaint Now →
+                </a>
+                <a href="index.html" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+                  Return to Feed
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -197,6 +223,7 @@
       <p class="footer-text">Built for cleaner, safer, and more accountable local neighborhoods.</p>
       <ul class="footer-nav">
         <li><a href="index.html" class="footer-link">Home Feed</a></li>
+        <li><a href="track.html" class="footer-link">Track Complaint</a></li>
         <li><a href="report.html" class="footer-link">Report Problem</a></li>
       </ul>
     </div>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Complaint Status — CivicFix</title>
+  <meta name="description" content="Check the real-time resolution progress of your community complaint using your secure tracking token.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 1. Header & Navigation -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="CivicFix Home">
+        <div class="brand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </div>
+        <span>CivicFix</span>
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Public Feed</a></li>
+          <li><a href="report.html" class="nav-link">Report Issue</a></li>
+          <li><a href="track.html" class="nav-link active" style="color: var(--primary); font-weight: 700;">Track Status</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 2. Main Tracking Content -->
+  <main class="form-page-wrapper">
+    <div class="container">
+      <section class="form-container" style="max-width: 680px;">
+
+        <!-- Header -->
+        <header class="form-header">
+          <div style="display: inline-flex; align-items: center; justify-content: center; width: 54px; height: 54px; background-color: var(--primary-light); color: var(--primary); border-radius: 50%; margin-bottom: 1rem;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+            </svg>
+          </div>
+          <h1 class="form-title">Track Complaint Status</h1>
+          <p class="form-subtitle">Enter your unique tracking token to check real-time resolution progress.</p>
+        </header>
+
+        <!-- Privacy Assurance Notice -->
+        <div class="form-notice">
+          <strong>🔒 Privacy-Preserving Tracking:</strong> To protect citizen and neighborhood privacy, tracking displays only verified progress milestones and dates. Locations, photos, and descriptions are never exposed publicly.
+        </div>
+
+        <!-- Error Alert Banner -->
+        <div id="track-error-banner" class="login-error-banner" role="alert" aria-live="assertive">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 1px;" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span id="track-error-text">No complaint found with this tracking token.</span>
+        </div>
+
+        <!-- Tracking Search Form -->
+        <form id="tracking-form" action="#" method="GET" novalidate>
+          <div class="form-group">
+            <label for="tracking-token-input" class="form-label">
+              Complaint Tracking Token <span class="required" aria-hidden="true">*</span>
+            </label>
+            <input
+              type="text"
+              id="tracking-token-input"
+              name="token"
+              class="form-input"
+              placeholder="e.g., CF-A1B2C3D4E5F6789012345678"
+              autocomplete="off"
+              spellcheck="false"
+              maxlength="64"
+              required
+            >
+            <p class="form-error" id="token-input-error">Please enter a valid tracking token.</p>
+            <p class="form-helper">Enter the 27-character tracking token given upon filing your complaint.</p>
+          </div>
+
+          <button type="submit" id="track-submit-btn" class="btn btn-primary btn-block btn-lg" style="margin-top: 1.25rem;">
+            <span id="track-btn-spinner" style="display: none;" aria-hidden="true">⏳</span>
+            <span id="track-btn-text">Check Complaint Status</span>
+          </button>
+        </form>
+
+        <!-- Tracking Result Card (Hidden until token lookup succeeds) -->
+        <section id="tracking-result-card" class="tracking-result-card" style="display: none;" aria-live="polite">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.25rem;">
+            <div>
+              <span style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);">Current Status</span>
+              <h2 id="result-status-title" style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin-top: 0.15rem;">
+                Submitted
+              </h2>
+            </div>
+            <span id="result-status-badge" class="admin-status-badge status-submitted">
+              Submitted
+            </span>
+          </div>
+
+          <!-- Clean Three-Step Progress Indicator -->
+          <div class="stepper-container" aria-label="Resolution Progress Steps">
+            <div class="stepper-line-bg"></div>
+            <div class="stepper-line-fill" id="stepper-line-fill"></div>
+
+            <!-- Step 1: Submitted -->
+            <div class="step-node" id="step-node-1">
+              <div class="step-circle" id="step-circle-1">1</div>
+              <div class="step-title">Submitted</div>
+              <div class="step-desc">Received & logged</div>
+            </div>
+
+            <!-- Step 2: In Progress -->
+            <div class="step-node" id="step-node-2">
+              <div class="step-circle" id="step-circle-2">2</div>
+              <div class="step-title">In Progress</div>
+              <div class="step-desc">Under active review</div>
+            </div>
+
+            <!-- Step 3: Resolved -->
+            <div class="step-node" id="step-node-3">
+              <div class="step-circle" id="step-circle-3">3</div>
+              <div class="step-title">Resolved</div>
+              <div class="step-desc">Addressed & closed</div>
+            </div>
+          </div>
+
+          <!-- Metadata Section -->
+          <div class="tracking-meta-grid">
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.2rem;">Submitted On:</div>
+              <strong id="result-date" style="font-size: 0.95rem; color: var(--text-main);">-</strong>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.2rem;">Tracking Token:</div>
+              <code id="result-token-display" class="token-code" style="font-size: 0.9rem;">-</code>
+            </div>
+          </div>
+
+          <div style="margin-top: 1.5rem; pt: 1rem; text-align: center;">
+            <button type="button" id="track-another-btn" class="btn btn-outline btn-block" style="font-size: 0.9rem;">
+              🔍 Check Another Complaint
+            </button>
+          </div>
+        </section>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- 3. Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <div class="brand-icon" style="width: 24px; height: 24px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </div>
+        <span>CivicFix Community Portal</span>
+      </div>
+      <p class="footer-text">Built for cleaner, safer, and more accountable local neighborhoods.</p>
+      <ul class="footer-nav">
+        <li><a href="index.html" class="footer-link">Public Feed</a></li>
+        <li><a href="track.html" class="footer-link">Track Complaint</a></li>
+        <li><a href="report.html" class="footer-link">Report Problem</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- Connect Track JavaScript -->
+  <script src="track.js"></script>
+</body>
+</html>
